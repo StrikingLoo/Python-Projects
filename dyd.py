@@ -18,19 +18,26 @@ def avgOut(atk,ac,hasThird,dice,mod,sneakyPlus,twf):
         # though the app can be refactored to take them into account).
 				if (i+atk)>ac:
 					total+=dmg(dice,mod)
+					if i==20:
+						total+=dmg(1,0)
 				if (j+atk)>ac:
 					if twf:
 						total+=dmg(dice,mod)
 					else:
 						total+=dmg(dice,0)
-					if hasThird and k+atk>ac:
+					if j==20:
+						total+=dmg(1,0)
+				if hasThird and k+atk>ac:
+					if k==20:
+						total+=dmg(1,0)
 						# if I have third atk then I got twf 
-						total+=dmg(dice,mod)
+					total+=dmg(dice,mod)
 	total/=(8000) ##normalizing here.
 	if sneakyPlus:#adding the sneak attack
 		total+=dmg(3,0)
 	else:
 		total+=dmg(2,0)
+
 	#normalize for amount of rolls
 	return total
 	
@@ -68,10 +75,19 @@ def testFullFighter(a,b):
 		#(atk,ac,hasThird,dice,mod,sneakyPlus,twf)
 		total+=avgOut(3,l,True,1,3,False,True)
 		#show(avgOut(3,l,True,1,3,False,True))
+		#'compare to full rogue'
+		#show(avgOut(4,l,False,1,4,True,False))
 	return total/(b+1-a)
 def testing(a,b):
-	show(testMix(a,b))
+	#show(testMix(a,b))
 	show(test2Rogue(a,b))
 	show(testFullFighter(a,b))
 
-testing(15,20)
+#testFullFighter(10,20)
+testing(12,12)
+####conclusion: a lv5 rogue will make more damage than
+### a lv3 rogue with 2 levels of fighter provided the enemies have an 
+## AC of 14 or higher. given an enemy of AC 12 or 13 damage is comparable (avg difference of 1)
+## especially since I did not take into account critical sneak attacks,
+## it is therefore, taking into account the cool lv5 feature, convenient to become a lv5 rogue, 
+###from a purely munchkin perspective. 
