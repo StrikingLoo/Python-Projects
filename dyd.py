@@ -33,10 +33,14 @@ def avgOut(atk,ac,hasThird,dice,mod,sneakyPlus,twf):
 						# if I have third atk then I got twf 
 					total+=dmg(dice,mod)
 	total/=(8000) ##normalizing here.
+	chanceOfNoSneak = ((float(ac-atk-1)/20)**2) ##assume first attack is always sneaky
+	if hasThird:
+		chanceOfNoSneak*=(float(ac-atk-1)/20)
+	chanceOfSneak = 1-chanceOfNoSneak
 	if sneakyPlus:#adding the sneak attack
-		total+=dmg(3,0)
+		total+=dmg(3,0)*chanceOfSneak
 	else:
-		total+=dmg(2,0)
+		total+=dmg(2,0)*chanceOfSneak
 
 	#normalize for amount of rolls
 	return total
@@ -52,7 +56,7 @@ def test2Rogue(a,b):
 	total=0
 	for l in range(a,b+1):
 		#print 'ac is '+str(l)
-		total+=avgOut(4,l,False,1,4,True,False)
+		total+=avgOut(7,l,False,1,4,True,False)
 		#show(avgOut(4,l,False,1,4,True,False))
 	return total/(b+1-a)
 
@@ -62,7 +66,7 @@ def testMix(a,b):
 	for l in range(a,b+1):
 		#print 'ac is '+str(l)
 		#(atk,ac,hasThird,dice,mod,sneakyPlus,twf)
-		total+=avgOut(3,l,False,1,3,False,True)
+		total+=avgOut(6,l,False,1,3,False,True)
 		#show(avgOut(3,l,False,1,3,False,True))
 	return total/(b+1-a)
 
@@ -73,21 +77,20 @@ def testFullFighter(a,b):
 	for l in range(a,b+1):
 		#print 'ac is '+str(l)
 		#(atk,ac,hasThird,dice,mod,sneakyPlus,twf)
-		total+=avgOut(3,l,True,1,3,False,True)
+		total+=avgOut(6,l,True,1,3,False,True)
 		#show(avgOut(3,l,True,1,3,False,True))
 		#'compare to full rogue'
 		#show(avgOut(4,l,False,1,4,True,False))
 	return total/(b+1-a)
 def testing(a,b):
-	#show(testMix(a,b))
+	show(testMix(a,b))
 	show(test2Rogue(a,b))
 	show(testFullFighter(a,b))
 
 #testFullFighter(10,20)
-testing(12,12)
-####conclusion: a lv5 rogue will make more damage than
-### a lv3 rogue with 2 levels of fighter provided the enemies have an 
-## AC of 14 or higher. given an enemy of AC 12 or 13 damage is comparable (avg difference of 1)
-## especially since I did not take into account critical sneak attacks,
-## it is therefore, taking into account the cool lv5 feature, convenient to become a lv5 rogue, 
-###from a purely munchkin perspective. 
+testing(10,20)
+####conclusion: a lv5 rogue will make less damage than
+### a lv3 rogue with 2 levels of fighter, given it will have a higher chance of netting at least one sneak attack.
+###the extra chance to get a sneak attack generates more damage than the extra die in its damage gained at lv5 of rogue class.
+## it should still be remembered that a lv5 rogue is less squishy thanks to it's lv5 feature.
+###So it's more complicated than just choosing the more damaging class
