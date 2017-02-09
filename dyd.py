@@ -89,8 +89,8 @@ def testing(a,b):
 
 #testFullFighter(10,20)
 testing(10,20)
-####conclusion: a lv5 rogue will make less damage than
-### a lv3 rogue with 2 levels of fighter, given it will have a higher chance of netting at least one sneak attack.
+####conclusion: a lv5 rogue will make less damage (an average of one point and a half in any range between 10 and 20)
+### than a lv3 rogue with 2 levels of fighter, given it will have a higher chance of netting at least one sneak attack.
 ###the extra chance to get a sneak attack generates more damage than the extra die in its damage gained at lv5 of rogue class.
 ## it should still be remembered that a lv5 rogue is less squishy thanks to it's lv5 feature.
 ###So it's more complicated than just choosing the more damaging class
